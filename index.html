@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shriram Polls Inc.</title>
+    <style>
+        .bar {
+        height: 50%;
+        width: 50%;
+        margin: 0;
+        background-color: blue;
+        }
+
+        .bar[data-choice="1"] {
+        background-color: red;
+        }
+
+        .bar[data-choice="2"] {
+        background-color: green;
+        }
+
+        .bar[data-choice="3"] {
+        background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <form id="form">
+    <div id="options">
+        <label>
+            Do your friends know you are cat?
+        </label><br/>
+        <label for="option-1">
+            <input type="radio" id="option-1" name="option" value="1">Yes</input>
+                   <div class="bar" data-choice="1"></div>
+        </label><br/>
+        <label for="option-2">
+            <input type="radio" id="option-2" name="option" value="2">No</input>
+                   <div class="bar" data-choice="2"></div>
+        </label><br/>
+        <label for="option-3">
+            <input type="radio" id="option-3" name="option" value="3">Maybe</input>
+                   <div class="bar" data-choice="3" ></div>
+        </label><br/>
+    </div>
+    <div id="submitButton">
+        <button type="button" value="submit" onclick = "setup()">
+            Submit
+        </button>
+    </div>
+</form>
+<script>
+    var button = document.getElementById('submitButton'),
+    tally = {
+        1: 0,
+        2: 0,
+        3: 0,
+        total: 0
+    };
+
+    function vote(choice) {
+        tally[choice]++;
+        tally["total"]++;
+        console.log("VOTED"+"+"+ tally[1]);
+    }
+
+    function barPercentage(node, tally) {
+        var choice = node.dataset.choice;
+        if (tally[choice])
+            return tally[choice]/tally["total"] * 100;
+        return 0;
+    }
+
+    function renderVotes() {
+        var bars = document.getElementsByClassName("bar");
+        for (var i = 0; i < bars.length; i++) {
+            var percentage = barPercentage(bars[i], tally);
+            console.log(percentage);
+            bars[i].style.width = percentage.toString() + "%";
+            bars[i].innerHTML = "" + percentage.toString() + "%";
+        }
+    }
+
+    function setup() {
+        var ele = document.getElementsByTagName('input');
+              for(i = 0; i < ele.length; i++) {
+                  if(ele[i].type="radio") {
+                      if(ele[i].checked){
+                        console.log(ele[i].value);  
+                        vote(ele[i].value);
+                    }
+                  }
+              }
+        renderVotes();
+    }
+    setup();
+</script>
+</body>
+</html>
